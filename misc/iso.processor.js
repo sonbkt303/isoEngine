@@ -7,7 +7,7 @@ var IsoProcessor = function( PORT, HOST, options ){
 
 	IsoProcessor.prototype = new Events.EventEmitter();
 
-	//creating the connection for raw tcp 
+	//creating the connection for raw tcp
 	this.socket = net.createConnection(PORT, HOST, function(){
 		//write on the socket when there is connection//
 		console.info('Writing to socket...%s on %s', HOST, PORT);

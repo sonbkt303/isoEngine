@@ -13,10 +13,11 @@ var TYPES = {
 }
 
 exports.model = function( app ){
-	var mongoose = require('mongoose');
-	var db = mongoose.createConnection('mongodb://localhost/isoEngine');
+	const mongoose = require('mongoose');
+	const db = mongoose.createConnection('mongodb://localhost/isoEngine');
 	
-	var ObjectId = mongoose.Types.ObjectId;
+	const ObjectId = mongoose.Types.ObjectId;
+	// const Date = mongoose.Types.Date;
 		
 	app.DB = {};
 	app.DB.ObjectId = ObjectId;
@@ -30,7 +31,7 @@ exports.model = function( app ){
 	db.once('open', function () {
 	 	console.info('Connection to mongodb established');
 
-	 	var institutionSchema = new mongoose.Schema({
+	 	const institutionSchema = new mongoose.Schema({
 		    name    : String,
 		    address :String,
 		    email 	:String,
@@ -54,8 +55,41 @@ exports.model = function( app ){
 		    }*/
 		    services :[],
 		});
+
+		const LogsSchema = new mongoose.Schema({
+			"msgType": String,
+			"processingCode": String,
+			"transAmount": String,
+			"transmissionDateTime": String,
+			"systemTraceAuditNum": String,
+			"localTime": String,
+			"localDate": String,
+			"settlementDate": String,
+			"pointOfServiceEntryCode": String,
+			"pointOfServiceConditionCode": String,
+			"sendingMember": String,
+			"retRefNumber": String,
+			"cardAcceptorTerminalId": String,
+			"cardAcceptorId": String,
+			"cardAcceptorNameLocation": String,
+			"additionalDataPrivate": String,
+			"transCurrencyCode": String,
+			"usrDefinedField": String,
+			"serviceCode": String,
+			"transRefNumber": String,
+			"receivingMember": String,
+			"senderAcc": String,
+			"receiverAcc": String,
+			"contentTransfers": String,
+			"PAN": String,
+			"MAC": String,
+			"type": String,
+			"referentId": ObjectId,
+			"createdAt": {type:Number, default: new Date().getTime()}
+		})
 	 	
 		app.DB.Institution = db.model('Institution', institutionSchema);
+		app.DB.Logs = db.model('Logs', LogsSchema);
 	});
 
 }

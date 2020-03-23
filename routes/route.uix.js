@@ -25,12 +25,11 @@ exports.uix = function( app ){
 			        	console.error('Error loading collection of institutions');
 			        	throw err;
 			        }
-			        console.dir(doc);
 
 			        res.render('create.ejs',{
 			        	title: 'Edit Institution',
 			        	institution: doc
-			        });
+							});
 			    });
 			}else{
 			    res.render('create.ejs',{
@@ -219,21 +218,45 @@ exports.uix = function( app ){
 	//service service for institution
 	app.post('/config.service.save', function serviceHandler(req, res){
 		try{
-			app.DB.Institution.findById( req.body.id ,function(err, inst){
+			app.DB.Institution.findById( req.body.id , function(err, inst){
 				if( err ){
 					console.error('Service save error.');
 					console.dir(err);
 					throw err;
 				}
-				inst.service.push({
+
+				// { services: [],
+				// 	_id: 5e5d16375bfee0cb9734e803,
+				// 	name: 'test',
+				// 	address: 'abc, 1K7',
+				// 	email: 'kimsonbui303@gmail.com',
+				// 	telephone: '0123456789',
+				// 	header: '0123456789',
+				// 	host: '127.0.0.1',
+				// 	port: '3000',
+				// 	__v: 0 }
+
+				inst.services.push({
 					id: new app.DB.ObjectId,
-					name: 'name',
-					fields: []
+					name: 'anh van',
+					fields: [1, 2, 3]
 				});
 
-				console.log('inst services--->');
-				console.dir(inst);
-				//var sid = new app.DB.ObjectId;
+				app.DB.Institution.findByIdAndUpdate( req.body.id, {
+					services: inst.services
+				},function callBack(err, data){
+					if( err ){
+						console.error('Document/Institution update error');
+						console.dir(err);
+						throw err;
+					}
+					console.info('Institution updated successfully.');
+				});
+				
+
+				// console.log('inst services--->');
+				// console.log('12312312', inst);
+				var sid = new app.DB.ObjectId;
 
 				console.info('Service updated successfully');
 				res.redirect('/config.service/' + inst._id);
